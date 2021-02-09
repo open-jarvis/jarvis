@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Primary Server</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <script src="/assets/js/swup.js"></script>
+    <script type="module" src="/assets/js/global.js" defer></script>
+</head>
+
+<body>
+    <div id="swup" class="container">
+        <div class="row">
+            <nav class="breadcrumb">
+                <a href="/">Server Setup</a>
+                <a href="/install/primary">Jarvis Primary Server Setup</a>
+                <a href="/install/primary">IP Configuration</a>
+                <a href="/install/primary/config">Server Configuration</a>
+            </nav>
+        </div>
+
+        <div class="row">
+            <h1> <i>star_rate</i> Primary Server Setup </h1>
+        </div>
+
+        <h3>Device Configuration</h3>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="vertical-center">
+                    <input type="checkbox" name="do-system-upgrade" id="do-system-upgrade">
+                    <label for="do-system-upgrade">Do a system upgrade before continuing<br><span class="dark-grey">sudo apt upgrade -y</span></label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="vertical-center">
+                    <input type="checkbox" name="do-join-cluster" id="do-join-cluster">
+                    <label for="do-join-cluster">I want to join an existing cluster<br><span class="dark-grey">(If you already have a type of Jarvis Server)</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 input-form" id="do-system-upgrade-open">
+            </div>
+            <div class="col-6 input-form" id="do-join-cluster-open">
+                <div class="chooser-box">
+                    <span class="loading-dots">Scanning for Jarvis Devices (beta)</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Password Settings</h3>
+
+        <div class="row">
+            <div class="col-6">
+                <h4>Database Credentials</h4>
+                <div class="input-group">
+                    <input type="password" id="set-db-password" data-for="set-db-password" placeholder=" ">
+                    <span>Admin Password</span>
+                    <i data-visibilityfor="set-db-password" data-on="visibility" data-off="visibility_off">visibility</i>
+                </div>
+                <div class="input-group">
+                    <div class="checkbox-sides">
+                        <input type="checkbox" class="switch" id="create-self-signed-certificate">
+                        <label for="create-self-signed-certificate" style="width: calc(100% - 4.1rem)">Create a self-signed certificate<br><span class="dark-grey">The certificate will be used for secure traffic between your database replications</span></label>
+                    </div>
+                </div>
+                <div class="input-group" id="create-self-signed-certificate-open">
+                    <input type="password" id="set-cert-pass" data-for="set-cert-pass" placeholder=" ">
+                    <span>Certificate Password (required)</span>
+                    <i data-visibilityfor="set-cert-pass" data-on="visibility" data-off="visibility_off">visibility</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>API Passwords</h4>
+                <div class="input-group">
+                    <input type="password" id="set-psk" data-for="set-psk" placeholder=" ">
+                    <span>Pre-Shared Key</span>
+                    <i data-visibilityfor="set-psk" data-on="visibility" data-off="visibility_off">visibility</i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="set-token-key" data-for="set-token-key" placeholder=" ">
+                    <span>Token Key</span>
+                    <i data-visibilityfor="set-token-key" data-on="visibility" data-off="visibility_off">visibility</i>
+                </div>
+                <p class="darker-grey">The pre-shared key must be entered on each newly registered device. Thus, each client can know the pre-shared key. <br> However, the token key is only used by the web interface to grant devices connection permission and should therefore
+                    remain secret.</p>
+                <p class="red">Do not forget the certificate password, admin password and keys! They will be stored encrypted and cannot be made visible again!</p>
+            </div>
+        </div>
+
+        <h3>Application Settings</h3>
+
+        <div class="row">
+            <div class="col-6" id="default-apps">
+                <h4>Install Recommended Default Apps</h4>
+                <div class="input-group">
+                    <div class="vertical-center">
+                        <input type="checkbox" id="install-headset" data-application-name="headset">
+                        <label for="install-headset">Headset<br><span class="dark-grey">Allows you to accept calls and do audio operations</span></label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="vertical-center">
+                        <input type="checkbox" id="install-dummy-1" data-application-name="dummy1">
+                        <label for="install-dummy-1">Dummy App 1<br><span class="dark-grey">This is the first dummy app</span></label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="vertical-center">
+                        <input type="checkbox" id="install-dummy-2" data-application-name="dummy2">
+                        <label for="install-dummy-2">Dummy App 2<br><span class="dark-grey">This is the second dummy app</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <button id="continue" class="blue"> Start Installation! </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

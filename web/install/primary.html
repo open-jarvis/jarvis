@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Primary Server</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <script src="/assets/js/swup.js"></script>
+    <script type="module" src="/assets/js/global.js" defer></script>
+</head>
+
+<body>
+    <div id="swup" class="container">
+        <div class="row">
+            <nav class="breadcrumb">
+                <a href="/">Server Setup</a>
+                <a href="/install/primary">Jarvis Primary Server Setup</a>
+                <a href="/install/primary">IP Configuration</a>
+            </nav>
+        </div>
+
+        <div class="row">
+            <h1> <i>star_rate</i> Primary Server Setup </h1>
+        </div>
+
+        <div class="row">
+            <p>First of all, let's configure your device. All boxes are <u>optional!</u></p>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="vertical-center">
+                    <input type="checkbox" name="new-ip" id="new-ip">
+                    <label for="new-ip">I want to statically configure a new IP <br> <span class="dark-grey">(Current IP Address: <?? cmd("hostname -I") ??>)</span></label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="vertical-center">
+                    <input type="checkbox" name="new-hostname" id="new-hostname">
+                    <label for="new-hostname">I want to configure a new hostname <br> <span class="dark-grey">(Current Hostname: <?? cmd("hostname") ??>)</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 input-form" id="new-ip-open">
+                <div class="input-group">
+                    <input type="text" id="set-ip" data-for="new-ip" data-default="<?? cmd(" hostname -I ") ??>" placeholder=" ">
+                    <span>New IP Address (<?? cmd(" hostname -I ") ??>)</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="set-gateway" data-for="new-ip" data-default="<?? cmd(" /sbin/ip route | awk '/default/ { print $3 }' ") ??>" placeholder=" ">
+                    <span>Default Gateway (<?? cmd(" /sbin/ip route | awk '/default/ { print $3 }' ") ??>)</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="set-mask" data-for="new-ip" data-default="255.255.255.0" placeholder=" ">
+                    <span>Netmask (255.255.255.0)</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="set-dns" data-for="new-ip" data-default="<?? cmd(" cat /etc/resolv.conf | awk '/nameserver/ { print $2 }' ") ??>" placeholder=" ">
+                    <span>DNS Server (<?? cmd(" cat /etc/resolv.conf | awk '/nameserver/ { print $2 }' ") ??>)</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="set-interface" data-for="new-ip" data-default="<?? cmd(" /sbin/ip route | awk '/default/ { print $5 }' ") ??>" placeholder=" ">
+                    <span>IP Interface (<?? cmd(" /sbin/ip route | awk '/default/ { print $5 }' ") ??>)</span>
+                </div>
+            </div>
+            <div class="col-6 input-form" id="new-hostname-open">
+                <div class="input-group">
+                    <input type="text" id="set-hostname" data-for="new-hostname" data-default="<?? cmd(" hostname ") ??>" placeholder=" ">
+                    <span>New Hostname (<?? cmd(" hostname ") ??>)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <button id="continue" class="blue"> Let's go! </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

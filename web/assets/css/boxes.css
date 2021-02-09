@@ -1,0 +1,31 @@
+/*  DIV BOXES  */
+
+
+/* a large card */
+
+div.card,
+div.chooser-box {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--padding-large);
+    background-color: var(--background-color-secondary);
+    transition: var(--transition);
+    position: relative;
+}
+
+div.card>i {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+div.card>label {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+div.card.select:hover {
+    cursor: pointer;
+    box-shadow: var(--box-shadow-level-1);
+}

@@ -1,0 +1,19 @@
+/*  FORM LAYOUTS  */
+
+.input-form {
+    /* just a list of inputs, the most basic form */
+    opacity: 1;
+    /* just to make the error highlighting go away */
+}
+
+[id$='-open'] {
+    transition: var(--transition);
+}
+
+[id$='-open']:not(.visible) {
+    opacity: 0;
+}
+
+[id$='-open'].visible {
+    opacity: 1;
+}

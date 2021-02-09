@@ -1,0 +1,14 @@
+/* CUSTOM STYLES FOR THE JARVIS WEBSITE */
+
+.card {
+    margin: 7px !important;
+}
+
+a {
+    transition: var(--transition);
+    color: var(--darker-grey);
+}
+
+a:hover {
+    color: var(--dark-grey);
+}

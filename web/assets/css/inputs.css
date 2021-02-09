@@ -1,0 +1,313 @@
+/*  BUTTONS, INPUTS, TEXTAREAS AND OTHER CLICKABLE AND INPUTABLE THINGS  */
+
+
+/*  buttons, inputs, textareas, all the things that are clickable and inputable  */
+
+button,
+input,
+textarea,
+.button,
+.input {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    padding: var(--padding);
+    font-size: 1rem;
+}
+
+button,
+input,
+.button,
+.input {
+    transition: var(--transition);
+}
+
+button,
+.button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .2;
+    cursor: not-allowed;
+}
+
+button:hover {
+    background-color: var(--grey);
+}
+
+
+/* colorized buttons and inputs */
+
+button.red,
+.button.red {
+    border-color: var(--red);
+}
+
+button.red:hover,
+.button.red:hover {
+    background-color: var(--red);
+    color: #fff;
+}
+
+button.green,
+.button.green {
+    border-color: var(--green);
+}
+
+button.green:hover,
+.button.green:hover {
+    background-color: var(--green);
+    color: #fff;
+}
+
+button.blue,
+.button.blue {
+    border-color: var(--blue);
+}
+
+button.blue:hover,
+.button.blue:hover {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+button.orange,
+.button.orange {
+    border-color: var(--orange);
+}
+
+button.orange:hover,
+.button.orange:hover {
+    background-color: var(--orange);
+    color: #fff;
+}
+
+input:focus {
+    border-color: var(--input-border-on-focus);
+}
+
+input[type=checkbox]+label,
+input[type=radio]+label {
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    --active: var(--green);
+    --active-inner: #fff;
+    --input-border: var(--red);
+    --input-border-hover: var(--green);
+    --background: transparent;
+    --disabled: #F5F9FF;
+    --disabled-inner: #E4ECFA;
+    --shadow-inner: rgba(18, 22, 33, .1);
+    --border-width: 2px;
+    height: 21px;
+    outline: none;
+    position: relative;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    cursor: pointer;
+    height: 21px;
+    border: var(--border-width) solid var(--input-border);
+    background: var(--background);
+    transition: var(--transition);
+}
+
+input[type=checkbox]:after,
+input[type=radio]:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    transition: var(--transition);
+}
+
+input[type=checkbox]:checked,
+input[type=radio]:checked {
+    background: var(--active);
+    border-color: var(--active);
+}
+
+input[type=checkbox]:checked:after,
+input[type=radio]:checked:after {
+    filter: drop-shadow(0 1px 2px var(--shadow-inner));
+    opacity: var(--transition);
+    /*transition: opacity 0.3s ease, filter 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.88, 0.32, 1.2);*/
+}
+
+input[type=checkbox]:disabled,
+input[type=radio]:disabled {
+    cursor: not-allowed;
+    opacity: 0.9;
+    background: var(--disabled);
+}
+
+input[type=checkbox]:disabled:checked,
+input[type=radio]:disabled:checked {
+    background: var(--disabled-inner);
+    border-color: var(--input-border);
+}
+
+input[type=checkbox]:hover:not(:checked):not(:disabled),
+input[type=radio]:hover:not(:checked):not(:disabled) {
+    border-color: var(--input-border-hover);
+}
+
+input[type=checkbox]:not(.switch),
+input[type=radio]:not(.switch) {
+    width: 21px;
+}
+
+input[type=checkbox]:not(.switch):after,
+input[type=radio]:not(.switch):after {
+    opacity: 0;
+}
+
+input[type=checkbox]:not(.switch):checked:after,
+input[type=radio]:not(.switch):checked:after {
+    opacity: 1;
+}
+
+input[type=checkbox]:not(.switch) {
+    border-radius: 6px;
+}
+
+input[type=checkbox]:not(.switch):after {
+    width: 5px;
+    height: 10px;
+    border: 3px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 5px;
+    top: 1px;
+    transform: rotate(20deg);
+    border-radius: 1px;
+}
+
+input[type=checkbox]:not(.switch):checked:after {
+    transform: rotate(43deg);
+}
+
+input[type=checkbox].switch {
+    width: 4rem;
+    border-radius: 9999rem;
+    height: 1.75rem;
+}
+
+input[type=checkbox].switch {
+    border-color: var(--grey) !important;
+}
+
+input[type=checkbox].switch:after {
+    left: -0.2rem;
+    top: -0.2rem;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    background: var(--active-inner);
+    transition: var(--transition);
+}
+
+input[type=checkbox].switch:hover:not(:checked)::after,
+input[type=radio].switch:hover:not(:checked)::after {
+    transition: var(--transition);
+    /* background-color: var(--input-border-hover); */
+}
+
+input[type=checkbox].switch:checked:after {
+    background: var(--active-inner);
+    transform: translate(2.25rem);
+}
+
+input[type=checkbox].switch:disabled:not(:checked):after {
+    opacity: 0.6;
+}
+
+input[type=radio] {
+    border-radius: 50%;
+}
+
+input[type=radio]:after {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--active-inner);
+    opacity: 0;
+    transform: scale(0.7);
+}
+
+input[type=radio]:checked:after {
+    background: var(--active-inner);
+    transform: scale(0.5);
+}
+
+input:focus+span,
+input:not(:placeholder-shown)+span {
+    opacity: 1;
+    transform: scale(0.75) translateY(-100%) translateX(-30px);
+}
+
+
+/* Input Eye */
+
+i[data-visibilityfor] {
+    cursor: pointer;
+    transform: translate(-2.5rem, 0.5rem);
+}
+
+
+/* For IE Browsers*/
+
+div.input-group {
+    margin: 20px 0 5px;
+    position: relative;
+    display: inline-block;
+}
+
+div.input-group>span {
+    padding: 0.85rem;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: 0.15s;
+    transition-timing-function: ease-out;
+    opacity: 0.5;
+    line-height: 1.1rem;
+    color: var(--darker-grey);
+}
+
+div.input-group>input {
+    padding: 10px;
+    width: 80%;
+}
+
+div.input-group>input:focus+span,
+div.input-group>input:not(:placeholder-shown)+span {
+    opacity: 1;
+    transform: scale(0.75) translateY(-125%) translateX(-15%);
+    padding: 0;
+}
+
+
+/* For IE Browsers*/
+
+div.input-group>input:focus+span,
+div.input-group>input:not(:-ms-input-placeholder)+span {
+    opacity: 1;
+    transform: scale(0.75) translateY(-100%) translateX(-15%);
+}
+
+.checkbox-sides {
+    display: flex;
+    align-items: center;
+    /* justify-content; */
+    /* width: 75%; */
+}

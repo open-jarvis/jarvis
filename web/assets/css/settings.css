@@ -1,0 +1,107 @@
+/*  GLOBAL SETTINGS LIKE FONT-FACE, COLOR CODES, ETC...  */
+
+@font-face {
+    font-family: Apercu;
+    src: url(./apercu.woff);
+}
+
+
+/* page settings */
+
+:root {
+    --font-family: "Apercu";
+    --padding: 10px 20px;
+    --padding-large: 20px 25px;
+    --border-radius: 5px;
+    --box-shadow-level-1: 0px 10px 25px -8px #00000040;
+    --box-shadow-level-2: "todo";
+    --box-shadow-level-3: "todo";
+    --box-shadow-level-4: "todo";
+    --box-shadow-level-5: "todo";
+    --transition: .2s ease;
+    --lighter-grey: #fdfdfd;
+    --light-grey: #f1f1f1;
+    --grey: #ddd;
+    --dark-grey: #999;
+    --darker-grey: #666;
+    --light-black: #333;
+    --red: #ff3f3f;
+    --green: #1dc558;
+    --blue: #3f65ff;
+    --orange: #ff9b3f;
+    --border-color: var(--grey);
+    --background-color: var(--light-grey);
+    --background-color-secondary: var(--lighter-grey);
+    --input-border-on-focus: var(--blue);
+}
+
+
+/*  classes to distribute the settings  */
+
+.red {
+    color: var(--red)
+}
+
+.blue {
+    color: var(--blue)
+}
+
+.green {
+    color: var(--green)
+}
+
+.orange {
+    color: var(--orange)
+}
+
+.bg-red {
+    background-color: var(--red)
+}
+
+.bg-blue {
+    background-color: var(--blue)
+}
+
+.bg-green {
+    background-color: var(--green)
+}
+
+.bg-orange {
+    background-color: var(--orange)
+}
+
+.border-red {
+    border-color: var(--red) !important;
+}
+
+.border-blue {
+    border-color: var(--blue) !important;
+}
+
+.border-green {
+    border-color: var(--green) !important;
+}
+
+.border-orange {
+    border-color: var(--orange) !important;
+}
+
+.light-grey {
+    color: var(--light-grey);
+}
+
+.light-black {
+    color: var(--light-black);
+}
+
+.grey {
+    color: var(--grey);
+}
+
+.dark-grey {
+    color: var(--dark-grey);
+}
+
+.darker-grey {
+    color: var(--darker-grey);
+}

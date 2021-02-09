@@ -1,0 +1,242 @@
+#!/usr/bin/python3
+
+from jarvis import SetupTools
+import os
+import json
+import traceback
+import subprocess
+
+
+PRODUCTION = False
+POST_BODY = json.loads(os.environ["HTTP_POST_BODY"])
+SCRIPTS_PATH = os.getcwd() + "/scripts"
+
+print("Content-type: application/json\r\n\r\n")
+
+
+def change_static_ip(interface, ip_address, routers, dns, cidr_mask):
+    conf_file = '/etc/dhcpcd.conf'
+    try:
+        # Sanitize/validate params above
+        with open(conf_file, 'r') as file:
+            data = file.readlines()
+
+        # Find if config exists
+        ethFound = next(
+            (x for x in data if 'interface ' + interface in x), None)
+        ethIndex = None
+
+        if ethFound:
+            ethIndex = data.index(ethFound)
+            if data[ethIndex].startswith('#'):
+                # commented out by default, make active
+                data[ethIndex] = data[ethIndex].replace('#', '')
+
+        # If config is found, use index to edit the lines you need ( the next 3)
+        if ethIndex:
+            data[ethIndex+1] = f'static ip_address={ip_address}/{cidr_mask}\n'
+            data[ethIndex+2] = f'static routers={routers}\n'
+            data[ethIndex+3] = f'static domain_name_servers={dns}\n'
+
+            with open(conf_file, 'w') as file:
+                file.writelines(data)
+        else:
+            with open(conf_file, 'a') as file:
+                file.write("\ninterface {}\nstatic ip_address={}/{}\nstatic routers={}\nstatic domain_name_servers={}\n".format(
+                    interface, ip_address, cidr_mask, routers, dns))
+
+        return True
+    except Exception as ex:
+        print("Static IP Error: {}".format(ex))
+        raise ex
+    finally:
+        pass
+
+
+# CURRENT WORKING DIRECTORY:
+# DIR/web
+# CURRENT USER:
+# root
+
+
+try:
+    if "ip-config" in POST_BODY:
+        from ipaddress import IPv4Network
+
+        interface = POST_BODY["ip-config"]["interface"]
+        ip = POST_BODY["ip-config"]["ip"]
+        dns = POST_BODY["ip-config"]["dns"]
+        mask = POST_BODY["ip-config"]["mask"]
+        gateway = POST_BODY["ip-config"]["gateway"]
+
+        cidr_mask = IPv4Network(f"0.0.0.0/{mask}").prefixlen
+
+        if PRODUCTION:
+            change_static_ip(interface, ip, gateway, dns, cidr_mask)
+
+    if "hostname" in POST_BODY:
+        import subprocess
+
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "hostname", "-b", POST_BODY["hostname"]], stderr=subprocess.STDOUT)
+
+    if "system-update" in POST_BODY:
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "apt", "update"], stderr=subprocess.STDOUT)
+
+    if "system-upgrade" in POST_BODY:
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "apt", "upgrade", "-y"], stderr=subprocess.STDOUT)
+
+    if "install-database" in POST_BODY:
+        if PRODUCTION:
+            pass
+            # result = subprocess.check_output(
+                # ["sudo", "/bin/bash", "install-db.sh"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
+
+    if "configure-database" in POST_BODY:
+        admin_password = POST_BODY["configure-database"]["admin-password"]
+        create_ssc = POST_BODY["configure-database"]["create-self-signed-certificate"]
+
+        if PRODUCTION:
+            SSC_KEY_PATH = "/home/couchdb/jarvis-couchdb.key"
+            SSC_CRT_PATH = "/home/couchdb/jarvis-couchdb.crt"
+            SSC_PASSWORD = POST_BODY["configure-database"]["self-signed-certificate-pass"] if create_ssc == "1" else ""
+
+            # BASIC CONFIGURATION INCLUDING ADMIN PASSWORD AND BIND IP
+            # TODO: maybe add port and other options to the web gui
+
+            # ADMIN PASSWORD
+            SetupTools.regex_replace_in_file(
+                "/home/couchdb/etc/local.ini", ";?admin = [^\\n]*", f"admin = {admin_password}")
+            # BIND IP
+            SetupTools.regex_replace_in_file(
+                "/home/couchdb/etc/local.ini", ";?bind_address = [0-9.]+", "bind_address = 0.0.0.0")
+
+            if create_ssc:
+                from OpenSSL import crypto, SSL
+
+                def cert_gen(
+                        emailAddress="jarvis@philippscheer.com",
+                        commonName="jarvis-primary.local",
+                        countryName="AT",
+                        localityName="Vienna",
+                        stateOrProvinceName="Vienna",
+                        organizationName="OpenJarvis",
+                        organizationUnitName="OpenJarvisPrimary",
+                        serialNumber=0,
+                        validityStartInSeconds=0,
+                        validityEndInSeconds=10*365*24*60*60,   # 10 years
+                        KEY_FILE="private.key",
+                        CERT_FILE="selfsigned.crt"):
+                    # can look at generated file using openssl:
+                    # openssl x509 -inform pem -in selfsigned.crt -noout -text
+                    # create a key pair
+                    k = crypto.PKey()
+                    k.generate_key(crypto.TYPE_RSA, 4096)
+                    # create a self-signed cert
+                    cert = crypto.X509()
+                    cert.get_subject().C = countryName
+                    cert.get_subject().ST = stateOrProvinceName
+                    cert.get_subject().L = localityName
+                    cert.get_subject().O = organizationName
+                    cert.get_subject().OU = organizationUnitName
+                    cert.get_subject().CN = commonName
+                    cert.get_subject().emailAddress = emailAddress
+                    cert.set_serial_number(serialNumber)
+                    cert.gmtime_adj_notBefore(0)
+                    cert.gmtime_adj_notAfter(validityEndInSeconds)
+                    cert.set_issuer(cert.get_subject())
+                    cert.set_pubkey(k)
+                    cert.sign(k, 'sha512')
+                    with open(CERT_FILE, "wt") as f:
+                        f.write(crypto.dump_certificate(
+                            crypto.FILETYPE_PEM, cert).decode("utf-8"))
+                    with open(KEY_FILE, "wt") as f:
+                        f.write(crypto.dump_privatekey(
+                            crypto.FILETYPE_PEM, k).decode("utf-8"))
+
+                cert_gen(KEY_FILE=SSC_KEY_PATH, CERT_FILE=SSC_CRT_PATH)
+
+                # enables certificates and also a PER-USER DB
+                SetupTools.regex_replace_in_file(
+                    "/home/couchdb/etc/local.ini", ";?enable = [^\\n]*", "enable = true")
+                # set cert file
+                SetupTools.regex_replace_in_file(
+                    "/home/couchdb/etc/local.ini", "^;?cert_file = [^\\n]*", f"cert_file = {SSC_CRT_PATH}")
+                # set private key file
+                SetupTools.regex_replace_in_file(
+                    "/home/couchdb/etc/local.ini", "^;?key_file = [^\\n]*", f"key_file = {SSC_KEY_PATH}")
+                # set crt password
+                SetupTools.regex_replace_in_file(
+                    "/home/couchdb/etc/local.ini", "^;?password = [^\\n]*", f"password = {SSC_PASSWORD}")
+
+    if "start-database" in POST_BODY:
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "systemctl", "start", "couchdb"])
+
+    if "create-schema" in POST_BODY:
+        import time
+        time.sleep(5)
+        admin_password = POST_BODY["create-schema"]["admin-password"]
+        if PRODUCTION:
+            import couchdb2
+            server = couchdb2.Server(username="admin", password=admin_password)
+            users_db = None
+            if "_users" in server:
+                users_db = server.get("_users")
+            else: 
+                server.create("_users")
+                users_db = server.get("_users")
+            
+            users_db.put({
+                "_id": "org.couchdb.user:jarvis",
+                "name": "jarvis",
+                "type": "user",
+                "roles": [],
+                "password": "jarvis"
+            })
+            [server.create(x) for x in ["devices", "applications",
+                            "instants", "tokens", "configuration", "brain"]]
+
+
+    if "download-jarvis-backend" in POST_BODY:
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "git", "clone", "https://github.com/open-jarvis/jarvis-server"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
+
+    if "run-backend-setup" in POST_BODY:
+        if PRODUCTION:
+            result = subprocess.check_output(
+                ["sudo", "/usr/bin/python3", "setup.py", "--no-input"], stderr=subprocess.STDOUT, cwd=f"{SCRIPTS_PATH}/jarvis-server")
+
+    if "configure-api-credentials" in POST_BODY:
+        if PRODUCTION:
+            import couchdb2
+            server = couchdb2.Server(username="jarvis", password="jarvis")
+            confdb = server.get("configuration")
+            confdb.put({
+                "pre-shared-key": POST_BODY["configure-api-credentials"]["pre-shared-key"]
+            })
+            confdb.put({
+                "token-key": POST_BODY["configure-api-credentials"]["token-key"]
+            })
+
+except subprocess.CalledProcessError as e:
+    print("failed")
+    print("==============")
+    print(traceback.format_exc())
+    print("==============")
+    print(e.stdout.decode("utf-8"))
+    print(e.stderr)
+    exit(1)
+except Exception as e:
+    print("failed")
+    print("==============")
+    print(traceback.format_exc())
+print("ok")
+exit(0)

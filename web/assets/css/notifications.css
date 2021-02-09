@@ -1,0 +1,26 @@
+/*  NOTIFICATIONS AND ALERTS  */
+
+.notification {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    border-radius: var(--border-radius);
+    border: 2px solid #fff;
+    padding: var(--padding);
+}
+
+.notification.red {
+    border-color: var(--red);
+}
+
+.notification.orange {
+    border-color: var(--orange);
+}
+
+.notification.blue {
+    border-color: var(--blue);
+}
+
+.notification.green {
+    border-color: var(--green);
+}

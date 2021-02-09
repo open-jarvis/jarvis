@@ -1,0 +1,74 @@
+@import "settings.css";
+@import "simplegrid.io.css";
+@import "inputs.css";
+@import "material.css";
+@import "layout.css";
+@import "boxes.css";
+@import "lists.css";
+@import "navigation.css";
+@import "forms.css";
+@import "notifications.css";
+
+/* global settings */
+
+* {
+    font-family: var(--font-family);
+    box-sizing: border-box;
+    outline: none;
+}
+
+
+/* html and body */
+
+html,
+body {
+    margin: 0;
+    background-color: var(--background-color);
+    user-select: none;
+}
+
+.hidden {
+    display: none;
+}
+
+pre {
+    margin: 0;
+}
+
+code {
+    background-color: var(--background-color);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    font-family: monospace;
+    width: 100%;
+    overflow: auto;
+}
+
+.swup-progress-bar {
+    height: 2px;
+    background-color: var(--blue);
+}
+
+::-webkit-scrollbar {
+    width: 1.75rem;
+    height: 18px;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 10px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: var(--dark-grey);
+    border-radius: 15px;
+}
+
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}

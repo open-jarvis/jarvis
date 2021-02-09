@@ -1,0 +1,16 @@
+[Unit]
+Description=Jarvis setup daemon
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/python3 /jarvis/setup/jarvis-setup.py
+StandardOutput=append:/jarvis/setup/logs/jarvis-setupd-output.log
+StandardError=append:/jarvis/setup/logs/jarvis-setupd-error.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=CouchDB is an open source database from Apache
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/home/couchdb/bin/couchdb
+StandardOutput=append:/home/couchdb/logs/stdout.log
+StandardError=append:/home/couchdb/logs/stderr.log
+
+[Install]
+WantedBy=multi-user.target

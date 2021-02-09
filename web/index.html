@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jarvis Setup </title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <script src="/assets/js/swup.js"></script>
+    <script type="module" src="/assets/js/global.js" defer></script>
+</head>
+
+<body>
+    <div id="swup" class="container">
+        <div class="row">
+            <nav class="breadcrumb">
+                <a href="/">Server Setup</a>
+            </nav>
+        </div>
+
+        <div id="version-checker" class="notification <?? 'green' if os.path.exists('/jarvis/.os-version') else 'red' ??>">
+            <?? 'You\'re using the official Jarvis image!' if os.path.exists("/jarvis/.os-version") else 'You\'re not using the official Jarvis image.<br>When the setup doesn\'t work, flash the <a target="_blank" href=\"https://raw.githubusercontent.com/open-jarvis/jarvis/master/images/jarvis-latest.img\">official image</a>' ??>
+        </div>
+
+        <div class="row">
+            <h1> <i>bolt</i> Welcome!</h1>
+        </div>
+
+        <div class="row">
+            <p style="margin-left: 10px;">Hi! I'm Jarvis and I'll guide you through the installation process! <br> First of all, tell me what you'd like to use this device for: </p>
+        </div>
+
+        <div class="row">
+            <div class="col-6 card select" id="install-primary">
+                <i class="blue">star_rate</i>
+                <label> Primary Server</label>
+                <span>This device will act as the primary Jarvis server and has the full feature set</span>
+
+                <div class="row">
+                    <div class="col-6">
+                        <ul>
+                            <li class="yes">HTTP/MQTT API</li>
+                            <li class="yes">Database</li>
+                            <li class="yes">Web Dashboard</li>
+                            <li class="yes">Applications</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul>
+                            <!-- <li class="no"></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 card select" id="install-backup">
+                <i class="orange">backup</i>
+                <label> Database Server</label>
+                <span>This device will act as a database replication and backup server</span>
+
+                <div class="row">
+                    <div class="col-6">
+                        <ul>
+                            <li class="yes">Database</li>
+                            <li class="yes">Web Dashboard</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul>
+                            <li class="no">HTTP/MQTT API</li>
+                            <li class="no">Applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 card select" id="install-assistant">
+                <i class="green">hearing</i>
+                <label> Home assistant </label>
+                <span>This device will be used to interact with the user</span>
+
+                <div class="row">
+                    <div class="col-6">
+                        <ul>
+                            <li class="yes">Record sound</li>
+                            <li class="yes">Play audio</li>
+                            <li class="yes">Web Dashboard</li>
+                            <li class="yes">API interface</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul>
+                            <li class="no">Database</li>
+                            <li class="no">HTTP/MQTT API</li>
+                            <li class="no">Applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 card select" id="install-firewall">
+                <i class="red">security</i>
+                <label> Firewall </label>
+                <span>This device will be block ingoing traffic and act as an network-wide ad blocker</span>
+
+                <div class="row">
+                    <div class="col-6">
+                        <ul>
+                            <li class="yes">Web Dashboard</li>
+                            <li class="yes">Network Statistics</li>
+                            <li class="yes">Database</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul>
+                            <li class="no">API</li>
+                            <li class="no">HTTP/MQTT API</li>
+                            <li class="no">Applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

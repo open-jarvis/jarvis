@@ -1,0 +1,65 @@
+/*  LIST DESIGN  */
+
+ul {
+    padding-left: 20px;
+}
+
+ul li.yes,
+ul li.no,
+ul li.progress {
+    list-style: none;
+}
+
+ul li.yes::before,
+ul li.no::before,
+ul li.progress::before {
+    font-family: "Material Icons Round";
+    position: absolute;
+    transform: translate(-20px, 1px);
+}
+
+ul li.yes::before {
+    content: "done";
+    color: var(--green);
+}
+
+ul li.no::before {
+    content: "clear";
+    color: var(--red);
+}
+
+ul li.progress::before {
+    content: "radio_button_unchecked";
+    color: var(--blue);
+}
+
+:root {
+    --padding-foreach-list: 15px;
+}
+
+ul li.ins-1 {
+    padding-left: calc(1 * var(--padding-foreach-list));
+}
+
+ul li.ins-2 {
+    padding-left: calc(2 * var(--padding-foreach-list));
+}
+
+ul li.ins-3 {
+    padding-left: calc(3 * var(--padding-foreach-list));
+}
+
+ul li.ins-4 {
+    padding-left: calc(4 * var(--padding-foreach-list));
+}
+
+ul li.ins-5 {
+    padding-left: calc(5 * var(--padding-foreach-list));
+}
+
+hr {
+    border: none;
+    background-color: var(--darker-grey);
+    height: 1px;
+    margin: 50px 0px;
+}
