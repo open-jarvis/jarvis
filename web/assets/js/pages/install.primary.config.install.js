@@ -38,11 +38,13 @@ async function startInstallation() {
         }, "#set-hostname"));
     }
 
-    await Promise.all(waitingFor);
-    document.querySelector("#set-network").classList.remove("progress");
-    document.querySelector("#set-network").classList.add(sectionError ? "no" : "yes");
-    if (!overAllError && sectionError) { overAllError = true; }
-    sectionError = false;
+    if (cnf["set-new-ip"] || cnf["set-new-hostname"]) {
+        await Promise.all(waitingFor);
+        document.querySelector("#set-network").classList.remove("progress");
+        document.querySelector("#set-network").classList.add(sectionError ? "no" : "yes");
+        if (!overAllError && sectionError) { overAllError = true; }
+        sectionError = false;
+    }
 
     // do system upgrade and install database, etc...
     waitingFor = [];

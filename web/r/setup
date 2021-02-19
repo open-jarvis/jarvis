@@ -184,30 +184,25 @@ try:
         time.sleep(5)
         admin_password = POST_BODY["create-schema"]["admin-password"]
         if PRODUCTION:
-            import couchdb2
-            server = couchdb2.Server(username="admin", password=admin_password)
-            users_db = None
-            if "_users" in server:
-                users_db = server.get("_users")
-            else: 
-                server.create("_users")
-                users_db = server.get("_users")
-            
-            users_db.put({
+            from jarvis import Database
+            db = Database("admin", admin_password, "jarvis")
+            users_table = db.table("_users", True)
+
+            users_table.insert({
                 "_id": "org.couchdb.user:jarvis",
                 "name": "jarvis",
                 "type": "user",
                 "roles": [],
                 "password": "jarvis"
             })
-            [server.create(x) for x in ["devices", "applications",
-                            "instants", "tokens", "configuration", "brain"]]
+            [db.table(x) for x in ["devices", "applications",
+                            "instants", "tokens", "config", "brain"]]
 
 
     if "download-jarvis-backend" in POST_BODY:
         if PRODUCTION:
             result = subprocess.check_output(
-                ["sudo", "git", "clone", "https://github.com/open-jarvis/jarvis-server"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
+                ["sudo", "git", "clone", "https://github.com/open-jarvis/jarvis-server", "--branch", "dev"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
 
     if "run-backend-setup" in POST_BODY:
         if PRODUCTION:
