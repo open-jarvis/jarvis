@@ -95,7 +95,7 @@ try:
         if PRODUCTION:
             pass
             # result = subprocess.check_output(
-                # ["sudo", "/bin/bash", "install-db.sh"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
+            # ["sudo", "/bin/bash", "install-db.sh"], stderr=subprocess.STDOUT, cwd=SCRIPTS_PATH)
 
     if "configure-database" in POST_BODY:
         admin_password = POST_BODY["configure-database"]["admin-password"]
@@ -195,9 +195,8 @@ try:
                 "roles": [],
                 "password": "jarvis"
             })
-            [db.table(x) for x in ["devices", "applications",
-                            "instants", "tokens", "config", "brain"]]
-
+            # [db.table(x) for x in ["devices", "applications", "logs", "analytics",
+            #                        "instants", "tokens", "config", "brain"]]
 
     if "download-jarvis-backend" in POST_BODY:
         if PRODUCTION:
