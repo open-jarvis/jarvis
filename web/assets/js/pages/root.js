@@ -13,12 +13,7 @@ function registerCardClickHandlers() {
         Object.keys(locations).forEach(function(id) {
             const page = locations[id];
             document.getElementById(id).addEventListener("click", e => {
-                swup.loadPage({
-                    url: page,
-                    method: "GET",
-                    data: "",
-                    customTransition: ""
-                });
+                redirect(page);
             })
         });
     } catch (e) {}

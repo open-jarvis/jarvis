@@ -87,12 +87,7 @@ document.querySelectorAll("input").forEach(el => {
 // continue button
 document.querySelector("#continue").addEventListener("click", function() {
     storeData();
-    swup.loadPage({
-        url: "/install/primary/config",
-        method: "GET",
-        data: "",
-        customTransition: ""
-    });
+    redirect("/install/primary/config");
 });
 
 // stored data functions

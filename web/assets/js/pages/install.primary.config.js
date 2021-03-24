@@ -22,12 +22,7 @@ document.querySelector("#continue").addEventListener("click", function() {
         document.querySelector("#set-cert-pass").classList.add("shaking");
     }
     storeData();
-    swup.loadPage({
-        url: "/install/primary/config/install",
-        method: "GET",
-        data: "",
-        customTransition: ""
-    });
+    redirect("/install/primary/config/install");
 });
 
 // stored data functions
